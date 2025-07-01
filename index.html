@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人脉关系可视化平台</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { Search, Upload, Users, Building, Phone, Mail, Briefcase, X, ArrowLeft, Eye } = lucide;
+
+        const NetworkVisualization = () => {
+          const [nodes, setNodes] = useState([]);
+          const [links, setLinks] = useState([]);
+          const [searchTerm, setSearchTerm] = useState('');
+          const [selectedNode, setSelectedNode] = useState(null);
+          const [showUploadModal, setShowUploadModal] = useState(false);
+          const [currentView, setCurrentView] = useState('list'); // 'list' or 'network'
+          const [focusedPerson, setFocusedPerson] = useState(null);
+          const svgRef = useRef(null);
+          const fileInputRef = useRef(null);
+
+          // 示例数据
+          useEffect(() => {
+            const sampleNodes = [
+              { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学', offer: true },
+              { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学', offer: true },
+              { id: '3', name: '王五', company: '智能制造', position: 'CTO', industry: '制造业', expertise: '工业4.0', phone: '13800138003', email: 'wang@mfg.com', university: '复旦大学', offer: true },
+              { id: '4', name: '赵六', company: '数据研究院', position: '研究员', industry: '研究', expertise: '大数据分析', phone: '13800138004', email: 'zhao@research.com', university: '上海交大', offer: true },
+              { id: '5', name: '钱七', company: '云服务公司', position: '架构师', industry: '云计算', expertise: '分布式系统', phone: '13800138005', email: 'qian@cloud.com', university: '浙江大学', offer: true },
+              { id: '6', name: '孙八', company: '生物科技', position: '研发总监', industry: '生物科技', expertise: '基因编辑', phone: '13800138006', email: 'sun@biotech.com', university: '中科大', offer: true },
+              { id: '7', name: '周九', company: '新能源汽车', position: '产品经理', industry: '新能源', expertise: '电池技术', phone: '13800138007', email: 'zhou@ev.com', university: '哈工大', offer: true },
+              { id: '8', name: '吴十', company: '区块链科技', position: '技术总监', industry: '区块链', expertise: '智能合约', phone: '13800138008', email: 'wu@blockchain.com', university: '南京大学', offer: true }
+            ];
+
+            const sampleLinks = [
+              { source: '1', target: '2', relationship: '投资关系' },
+              { source: '1', target: '3', relationship: '技术合作' },
+              { source: '2', target: '4', relationship: '项目顾问' },
+              { source: '3', target: '5', relationship: '供应商' },
+              { source: '4', target: '5', relationship: '研究合作' },
+              { source: '6', target: '7', relationship: '合作伙伴' },
+              { source: '1', target: '8', relationship: '战略合作' },
+              { source: '2', target: '6', relationship: '投资关系' }
+            ];
+
+            setNodes(sampleNodes);
+            setLinks(sampleLinks);
+          }, []);
+
+          // 人物卡片列表视图
+          const PersonCard = ({ person, onViewNetwork }) => {
+            const industryColors = {
+              '人工智能': 'bg-blue-100 text-blue-700',
+              '投资': 'bg-green-100 text-green-700',
+              '制造业': 'bg-yellow-100 text-yellow-700',
+              '研究': 'bg-purple-100 text-purple-700',
+              '云计算': 'bg-red-100 text-red-700',
+              '生物科技': 'bg-pink-100 text-pink-700',
+              '新能源': 'bg-indigo-100 text-indigo-700',
+              '区块链': 'bg-gray-100 text-gray-700'
+            };
+
+            return (
+              <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => onViewNetwork(person)}>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                      <Users className="w-8 h-8 text-gray-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">{person.name}</h3>
+                      <p className="text-sm text-gray-500">{person.university} | {person.industry}</p>
+                    </div>
+                  </div>
+                  {person.offer && (
+                    <span className="text-xs text-gray-400 border border-gray-300 px-2 py-1 rounded">Offer</span>
+                  )}
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Building className="w-4 h-4" />
+                    <span>{person.company}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Briefcase className="w-4 h-4" />
+                    <span>{person.position}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs px-3 py-1 rounded-full ${industryColors[person.industry] || 'bg-gray-100 text-gray-700'}`}>
+                    {person.expertise}
+                  </span>
+                  <button 
+                    className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onViewNetwork(person);
+                    }}
+                  >
+                    <Eye className="w-4 h-4" />
+                    <span>查看关系网</span>
+                  </button>
+                </div>
+              </div>
+            );
+          };
+
+          // D3.js 网络图渲染
+          useEffect(() => {
+            if (currentView !== 'network' || !svgRef.current || nodes.length === 0) return;
+
+            const svg = d3.select(svgRef.current);
+            svg.selectAll('*').remove();
+
+            const width = svgRef.current.clientWidth;
+            const height = svgRef.current.clientHeight;
+
+            // 如果有焦点人物，过滤相关节点和连接
+            let displayNodes = nodes;
+            let displayLinks = links;
+            
+            if (focusedPerson) {
+              const connectedNodeIds = new Set([focusedPerson.id]);
+              links.forEach(link => {
+                if (link.source === focusedPerson.id || link.source.id === focusedPerson.id) {
+                  connectedNodeIds.add(typeof link.target === 'string' ? link.target : link.target.id);
+                }
+                if (link.target === focusedPerson.id || link.target.id === focusedPerson.id) {
+                  connectedNodeIds.add(typeof link.source === 'string' ? link.source : link.source.id);
+                }
+              });
+              
+              displayNodes = nodes.filter(node => connectedNodeIds.has(node.id));
+              displayLinks = links.filter(link => {
+                const sourceId = typeof link.source === 'string' ? link.source : link.source.id;
+                const targetId = typeof link.target === 'string' ? link.target : link.target.id;
+                return connectedNodeIds.has(sourceId) && connectedNodeIds.has(targetId);
+              });
+            }
+
+            const simulation = d3.forceSimulation(displayNodes)
+              .force('link', d3.forceLink(displayLinks).id(d => d.id).distance(150))
+              .force('charge', d3.forceManyBody().strength(-300))
+              .force('center', d3.forceCenter(width / 2, height / 2));
+
+            // 缩放功能
+            const zoom = d3.zoom()
+              .scaleExtent([0.1, 4])
+              .on('zoom', (event) => {
+                container.attr('transform', event.transform);
+              });
+
+            svg.call(zoom);
+
+            const container = svg.append('g');
+
+            // 绘制连线
+            const link = container.append('g')
+              .selectAll('line')
+              .data(displayLinks)
+              .enter().append('line')
+              .attr('stroke', '#999')
+              .attr('stroke-opacity', 0.6)
+              .attr('stroke-width', 2);
+
+            // 连线上的文字
+            const linkText = container.append('g')
+              .selectAll('text')
+              .data(displayLinks)
+              .enter().append('text')
+              .attr('font-size', 12)
+              .attr('fill', '#666')
+              .attr('text-anchor', 'middle')
+              .text(d => d.relationship);
+
+            // 绘制节点
+            const node = container.append('g')
+              .selectAll('circle')
+              .data(displayNodes)
+              .enter().append('circle')
+              .attr('r', d => d.id === focusedPerson?.id ? 40 : 30)
+              .attr('fill', d => {
+                const colors = {
+                  '人工智能': '#3b82f6',
+                  '投资': '#10b981',
+                  '制造业': '#f59e0b',
+                  '研究': '#8b5cf6',
+                  '云计算': '#ef4444',
+                  '生物科技': '#ec4899',
+                  '新能源': '#6366f1',
+                  '区块链': '#6b7280'
+                };
+                return colors[d.industry] || '#6b7280';
+              })
+              .attr('stroke', '#fff')
+              .attr('stroke-width', 3)
+              .style('cursor', 'pointer')
+              .on('click', (event, d) => {
+                setSelectedNode(d);
+              })
+              .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+
+            // 节点标签
+            const label = container.append('g')
+              .selectAll('text')
+              .data(displayNodes)
+              .enter().append('text')
+              .text(d => d.name)
+              .attr('font-size', d => d.id === focusedPerson?.id ? 16 : 14)
+              .attr('font-weight', d => d.id === focusedPerson?.id ? 'bold' : 'normal')
+              .attr('text-anchor', 'middle')
+              .attr('dy', 50)
+              .style('pointer-events', 'none');
+
+            // 力导向图更新
+            simulation.on('tick', () => {
+              link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+              linkText
+                .attr('x', d => (d.source.x + d.target.x) / 2)
+                .attr('y', d => (d.source.y + d.target.y) / 2);
+
+              node
+                .attr('cx', d => d.x)
+                .attr('cy', d => d.y);
+
+              label
+                .attr('x', d => d.x)
+                .attr('y', d => d.y);
+            });
+
+            function dragstarted(event, d) {
+              if (!event.active) simulation.alphaTarget(0.3).restart();
+              d.fx = d.x;
+              d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+              d.fx = event.x;
+              d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+              if (!event.active) simulation.alphaTarget(0);
+              d.fx = null;
+              d.fy = null;
+            }
+
+            return () => {
+              simulation.stop();
+            };
+          }, [nodes, links, currentView, focusedPerson]);
+
+          // 处理文件上传
+          const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              try {
+                alert('文件上传功能已准备就绪！实际应用中会解析 CSV/Excel 文件。');
+                setShowUploadModal(false);
+              } catch (error) {
+                alert('文件解析失败，请检查格式');
+              }
+            };
+            reader.readAsText(file);
+          };
+
+          // 进入网络视图
+          const handleViewNetwork = (person) => {
+            setFocusedPerson(person);
+            setCurrentView('network');
+            setSelectedNode(person);
+          };
+
+          // 返回列表视图
+          const handleBackToList = () => {
+            setCurrentView('list');
+            setFocusedPerson(null);
+            setSelectedNode(null);
+          };
+
+          // 过滤节点
+          const filteredNodes = nodes.filter(node => {
+            if (!searchTerm) return true;
+            const searchLower = searchTerm.toLowerCase();
+            return node.name.toLowerCase().includes(searchLower) ||
+                   node.company.toLowerCase().includes(searchLower) ||
+                   node.industry.toLowerCase().includes(searchLower) ||
+                   node.expertise.toLowerCase().includes(searchLower);
+          });
+
+          return (
+            <div className="w-full h-screen bg-gray-50 flex flex-col">
+              {/* 顶部工具栏 */}
+              <div className="bg-white shadow-sm border-b border-gray-200 p-4">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {currentView === 'network' && (
+                      <button
+                        onClick={handleBackToList}
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                      >
+                        <ArrowLeft className="w-5 h-5" />
+                        返回列表
+                      </button>
+                    )}
+                    <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                      <Users className="w-8 h-8 text-blue-600" />
+                      人脉关系可视化平台
+                    </h1>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    {/* 搜索框 */}
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="text"
+                        placeholder="搜索姓名、公司、行业、专长..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* 上传按钮 */}
+                    <button
+                      onClick={() => setShowUploadModal(true)}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <Upload className="w-5 h-5" />
+                      导入数据
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 主体内容区 */}
+              {currentView === 'list' ? (
+                // 人物卡片列表视图
+                <div className="flex-1 overflow-y-auto p-6">
+                  <div className="max-w-7xl mx-auto">
+                    {filteredNodes.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {filteredNodes.map(person => (
+                          <PersonCard 
+                            key={person.id} 
+                            person={person} 
+                            onViewNetwork={handleViewNetwork}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-gray-500">没有找到匹配的人物</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                // 网络关系视图
+                <div className="flex-1 flex">
+                  {/* 左侧信息面板 */}
+                  {selectedNode && (
+                    <div className="w-96 bg-white shadow-lg p-6 overflow-y-auto">
+                      <div className="flex justify-between items-start mb-6">
+                        <h2 className="text-xl font-bold text-gray-800">{selectedNode.name}</h2>
+                        <button
+                          onClick={() => setSelectedNode(null)}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <Building className="w-5 h-5 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-500">公司</p>
+                            <p className="font-medium">{selectedNode.company}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <Briefcase className="w-5 h-5 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-500">职位</p>
+                            <p className="font-medium">{selectedNode.position}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <Phone className="w-5 h-5 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-500">电话</p>
+                            <p className="font-medium">{selectedNode.phone}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <Mail className="w-5 h-5 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-500">邮箱</p>
+                            <p className="font-medium">{selectedNode.email}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-4 border-t">
+                          <p className="text-sm text-gray-500 mb-2">毕业院校</p>
+                          <p className="font-medium">{selectedNode.university}</p>
+                        </div>
+                        
+                        <div>
+                          <p className="text-sm text-gray-500 mb-2">行业领域</p>
+                          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                            {selectedNode.industry}
+                          </span>
+                        </div>
+                        
+                        <div>
+                          <p className="text-sm text-gray-500 mb-2">专长</p>
+                          <span className="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                            {selectedNode.expertise}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 网络图画布 */}
+                  <div className="flex-1 bg-white">
+                    <svg ref={svgRef} className="w-full h-full"></svg>
+                  </div>
+                </div>
+              )}
+
+              {/* 上传模态框 */}
+              {showUploadModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg p-6 w-96">
+                    <h3 className="text-lg font-bold mb-4">导入人脉数据</h3>
+                    <p className="text-gray-600 mb-4">
+                      请上传包含人脉信息的 CSV 或 Excel 文件。文件应包含以下列：姓名、公司、职位、电话、邮箱、行业、专长、毕业院校等。
+                    </p>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".csv,.xlsx,.xls"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                      >
+                        选择文件
+                      </button>
+                      <button
+                        onClick={() => setShowUploadModal(false)}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                      >
+                        取消
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<NetworkVisualization />);
+    </script>
+</body>
+</html>
