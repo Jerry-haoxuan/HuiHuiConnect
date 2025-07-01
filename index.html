@@ -30,17 +30,16 @@
 
           // 示例数据
           useEffect(() => {
-            const sampleNodes = [
-              { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学', offer: true },
-              { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学', offer: true },
-              { id: '3', name: '王五', company: '智能制造', position: 'CTO', industry: '制造业', expertise: '工业4.0', phone: '13800138003', email: 'wang@mfg.com', university: '复旦大学', offer: true },
-              { id: '4', name: '赵六', company: '数据研究院', position: '研究员', industry: '研究', expertise: '大数据分析', phone: '13800138004', email: 'zhao@research.com', university: '上海交大', offer: true },
-              { id: '5', name: '钱七', company: '云服务公司', position: '架构师', industry: '云计算', expertise: '分布式系统', phone: '13800138005', email: 'qian@cloud.com', university: '浙江大学', offer: true },
-              { id: '6', name: '孙八', company: '生物科技', position: '研发总监', industry: '生物科技', expertise: '基因编辑', phone: '13800138006', email: 'sun@biotech.com', university: '中科大', offer: true },
-              { id: '7', name: '周九', company: '新能源汽车', position: '产品经理', industry: '新能源', expertise: '电池技术', phone: '13800138007', email: 'zhou@ev.com', university: '哈工大', offer: true },
-              { id: '8', name: '吴十', company: '区块链科技', position: '技术总监', industry: '区块链', expertise: '智能合约', phone: '13800138008', email: 'wu@blockchain.com', university: '南京大学', offer: true }
-            ];
-
+           const sampleNodes = [
+  { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学' },
+  { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学' },
+  { id: '3', name: '王五', company: '智能制造', position: 'CTO', industry: '制造业', expertise: '工业4.0', phone: '13800138003', email: 'wang@mfg.com', university: '复旦大学' },
+  { id: '4', name: '赵六', company: '数据研究院', position: '研究员', industry: '研究', expertise: '大数据分析', phone: '13800138004', email: 'zhao@research.com', university: '上海交通大学' },
+  { id: '5', name: '钱七', company: '云服务公司', position: '架构师', industry: '云计算', expertise: '分布式系统', phone: '13800138005', email: 'qian@cloud.com', university: '浙江大学' },
+  { id: '6', name: '孙八', company: '生物科技', position: '研发总监', industry: '生物科技', expertise: '基因编辑', phone: '13800138006', email: 'sun@biotech.com', university: '中国科学技术大学' },
+  { id: '7', name: '周九', company: '新能源汽车', position: '产品经理', industry: '新能源', expertise: '电池技术', phone: '13800138007', email: 'zhou@ev.com', university: '同济大学' },
+  { id: '8', name: '吴十', company: '区块链科技', position: '技术总监', industry: '区块链', expertise: '智能合约', phone: '13800138008', email: 'wu@blockchain.com', university: '哈尔滨工业大学' }
+];
             const sampleLinks = [
               { source: '1', target: '2', relationship: '投资关系' },
               { source: '1', target: '3', relationship: '技术合作' },
