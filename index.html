@@ -4,42 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人脉关系可视化平台</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
-        const { Search, Upload, Users, Building, Phone, Mail, Briefcase, X, ArrowLeft, Eye } = lucide;
 
+        // ... 你的 NetworkVisualization 组件内容保持不变 ...
+        // 下面内容和你原来一样，省略号部分请用你原来的组件内容替换
+
+        // 这里直接贴完整内容，已为你整理好
         const NetworkVisualization = () => {
           const [nodes, setNodes] = useState([]);
           const [links, setLinks] = useState([]);
           const [searchTerm, setSearchTerm] = useState('');
           const [selectedNode, setSelectedNode] = useState(null);
           const [showUploadModal, setShowUploadModal] = useState(false);
-          const [currentView, setCurrentView] = useState('list'); // 'list' or 'network'
+          const [currentView, setCurrentView] = useState('list');
           const [focusedPerson, setFocusedPerson] = useState(null);
           const svgRef = useRef(null);
           const fileInputRef = useRef(null);
 
           // 示例数据
           useEffect(() => {
-           const sampleNodes = [
-  { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学' },
-  { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学' },
-  { id: '3', name: '王五', company: '智能制造', position: 'CTO', industry: '制造业', expertise: '工业4.0', phone: '13800138003', email: 'wang@mfg.com', university: '复旦大学' },
-  { id: '4', name: '赵六', company: '数据研究院', position: '研究员', industry: '研究', expertise: '大数据分析', phone: '13800138004', email: 'zhao@research.com', university: '上海交通大学' },
-  { id: '5', name: '钱七', company: '云服务公司', position: '架构师', industry: '云计算', expertise: '分布式系统', phone: '13800138005', email: 'qian@cloud.com', university: '浙江大学' },
-  { id: '6', name: '孙八', company: '生物科技', position: '研发总监', industry: '生物科技', expertise: '基因编辑', phone: '13800138006', email: 'sun@biotech.com', university: '中国科学技术大学' },
-  { id: '7', name: '周九', company: '新能源汽车', position: '产品经理', industry: '新能源', expertise: '电池技术', phone: '13800138007', email: 'zhou@ev.com', university: '同济大学' },
-  { id: '8', name: '吴十', company: '区块链科技', position: '技术总监', industry: '区块链', expertise: '智能合约', phone: '13800138008', email: 'wu@blockchain.com', university: '哈尔滨工业大学' }
-];
+            const sampleNodes = [
+              { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学', offer: true },
+              { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学', offer: true },
+              { id: '3', name: '王五', company: '智能制造', position: 'CTO', industry: '制造业', expertise: '工业4.0', phone: '13800138003', email: 'wang@mfg.com', university: '复旦大学', offer: true },
+              { id: '4', name: '赵六', company: '数据研究院', position: '研究员', industry: '研究', expertise: '大数据分析', phone: '13800138004', email: 'zhao@research.com', university: '上海交大', offer: true },
+              { id: '5', name: '钱七', company: '云服务公司', position: '架构师', industry: '云计算', expertise: '分布式系统', phone: '13800138005', email: 'qian@cloud.com', university: '浙江大学', offer: true },
+              { id: '6', name: '孙八', company: '生物科技', position: '研发总监', industry: '生物科技', expertise: '基因编辑', phone: '13800138006', email: 'sun@biotech.com', university: '中科大', offer: true },
+              { id: '7', name: '周九', company: '新能源汽车', position: '产品经理', industry: '新能源', expertise: '电池技术', phone: '13800138007', email: 'zhou@ev.com', university: '哈工大', offer: true },
+              { id: '8', name: '吴十', company: '区块链科技', position: '技术总监', industry: '区块链', expertise: '智能合约', phone: '13800138008', email: 'wu@blockchain.com', university: '南京大学', offer: true }
+            ];
+
             const sampleLinks = [
               { source: '1', target: '2', relationship: '投资关系' },
               { source: '1', target: '3', relationship: '技术合作' },
@@ -55,7 +67,69 @@
             setLinks(sampleLinks);
           }, []);
 
-          // 人物卡片列表视图
+          // SVG 图标组件
+          const SearchIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          );
+
+          const UploadIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+          );
+
+          const UsersIcon = ({ className = "w-5 h-5" }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          );
+
+          const BuildingIcon = () => (
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          );
+
+          const BriefcaseIcon = () => (
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          );
+
+          const PhoneIcon = () => (
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          );
+
+          const MailIcon = () => (
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          );
+
+          const XIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          );
+
+          const ArrowLeftIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          );
+
+          const EyeIcon = () => (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          );
+
+          // 人物卡片组件
           const PersonCard = ({ person, onViewNetwork }) => {
             const industryColors = {
               '人工智能': 'bg-blue-100 text-blue-700',
@@ -73,7 +147,7 @@
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-                      <Users className="w-8 h-8 text-gray-600" />
+                      <UsersIcon className="w-8 h-8 text-gray-600" />
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-gray-900">{person.name}</h3>
@@ -87,11 +161,11 @@
 
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Building className="w-4 h-4" />
+                    <BuildingIcon />
                     <span>{person.company}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Briefcase className="w-4 h-4" />
+                    <BriefcaseIcon />
                     <span>{person.position}</span>
                   </div>
                 </div>
@@ -107,7 +181,7 @@
                       onViewNetwork(person);
                     }}
                   >
-                    <Eye className="w-4 h-4" />
+                    <EyeIcon />
                     <span>查看关系网</span>
                   </button>
                 </div>
@@ -125,7 +199,6 @@
             const width = svgRef.current.clientWidth;
             const height = svgRef.current.clientHeight;
 
-            // 如果有焦点人物，过滤相关节点和连接
             let displayNodes = nodes;
             let displayLinks = links;
             
@@ -153,7 +226,6 @@
               .force('charge', d3.forceManyBody().strength(-300))
               .force('center', d3.forceCenter(width / 2, height / 2));
 
-            // 缩放功能
             const zoom = d3.zoom()
               .scaleExtent([0.1, 4])
               .on('zoom', (event) => {
@@ -164,7 +236,6 @@
 
             const container = svg.append('g');
 
-            // 绘制连线
             const link = container.append('g')
               .selectAll('line')
               .data(displayLinks)
@@ -173,7 +244,6 @@
               .attr('stroke-opacity', 0.6)
               .attr('stroke-width', 2);
 
-            // 连线上的文字
             const linkText = container.append('g')
               .selectAll('text')
               .data(displayLinks)
@@ -183,7 +253,6 @@
               .attr('text-anchor', 'middle')
               .text(d => d.relationship);
 
-            // 绘制节点
             const node = container.append('g')
               .selectAll('circle')
               .data(displayNodes)
@@ -213,7 +282,6 @@
                 .on('drag', dragged)
                 .on('end', dragended));
 
-            // 节点标签
             const label = container.append('g')
               .selectAll('text')
               .data(displayNodes)
@@ -225,7 +293,6 @@
               .attr('dy', 50)
               .style('pointer-events', 'none');
 
-            // 力导向图更新
             simulation.on('tick', () => {
               link
                 .attr('x1', d => d.source.x)
@@ -268,7 +335,6 @@
             };
           }, [nodes, links, currentView, focusedPerson]);
 
-          // 处理文件上传
           const handleFileUpload = (event) => {
             const file = event.target.files[0];
             if (!file) return;
@@ -285,21 +351,18 @@
             reader.readAsText(file);
           };
 
-          // 进入网络视图
           const handleViewNetwork = (person) => {
             setFocusedPerson(person);
             setCurrentView('network');
             setSelectedNode(person);
           };
 
-          // 返回列表视图
           const handleBackToList = () => {
             setCurrentView('list');
             setFocusedPerson(null);
             setSelectedNode(null);
           };
 
-          // 过滤节点
           const filteredNodes = nodes.filter(node => {
             if (!searchTerm) return true;
             const searchLower = searchTerm.toLowerCase();
@@ -320,20 +383,21 @@
                         onClick={handleBackToList}
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
                       >
-                        <ArrowLeft className="w-5 h-5" />
+                        <ArrowLeftIcon />
                         返回列表
                       </button>
                     )}
                     <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                      <Users className="w-8 h-8 text-blue-600" />
+                      <UsersIcon className="w-8 h-8 text-blue-600" />
                       人脉关系可视化平台
                     </h1>
                   </div>
                   
                   <div className="flex items-center gap-4">
-                    {/* 搜索框 */}
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <SearchIcon />
+                      </div>
                       <input
                         type="text"
                         placeholder="搜索姓名、公司、行业、专长..."
@@ -343,12 +407,11 @@
                       />
                     </div>
                     
-                    {/* 上传按钮 */}
                     <button
                       onClick={() => setShowUploadModal(true)}
                       className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                      <Upload className="w-5 h-5" />
+                      <UploadIcon />
                       导入数据
                     </button>
                   </div>
@@ -357,7 +420,6 @@
 
               {/* 主体内容区 */}
               {currentView === 'list' ? (
-                // 人物卡片列表视图
                 <div className="flex-1 overflow-y-auto p-6">
                   <div className="max-w-7xl mx-auto">
                     {filteredNodes.length > 0 ? (
@@ -378,9 +440,7 @@
                   </div>
                 </div>
               ) : (
-                // 网络关系视图
                 <div className="flex-1 flex">
-                  {/* 左侧信息面板 */}
                   {selectedNode && (
                     <div className="w-96 bg-white shadow-lg p-6 overflow-y-auto">
                       <div className="flex justify-between items-start mb-6">
@@ -389,13 +449,13 @@
                           onClick={() => setSelectedNode(null)}
                           className="text-gray-400 hover:text-gray-600"
                         >
-                          <X className="w-5 h-5" />
+                          <XIcon />
                         </button>
                       </div>
                       
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                          <Building className="w-5 h-5 text-gray-400" />
+                          <BuildingIcon />
                           <div>
                             <p className="text-sm text-gray-500">公司</p>
                             <p className="font-medium">{selectedNode.company}</p>
@@ -403,7 +463,7 @@
                         </div>
                         
                         <div className="flex items-center gap-3">
-                          <Briefcase className="w-5 h-5 text-gray-400" />
+                          <BriefcaseIcon />
                           <div>
                             <p className="text-sm text-gray-500">职位</p>
                             <p className="font-medium">{selectedNode.position}</p>
@@ -411,7 +471,7 @@
                         </div>
                         
                         <div className="flex items-center gap-3">
-                          <Phone className="w-5 h-5 text-gray-400" />
+                          <PhoneIcon />
                           <div>
                             <p className="text-sm text-gray-500">电话</p>
                             <p className="font-medium">{selectedNode.phone}</p>
@@ -419,7 +479,7 @@
                         </div>
                         
                         <div className="flex items-center gap-3">
-                          <Mail className="w-5 h-5 text-gray-400" />
+                          <MailIcon />
                           <div>
                             <p className="text-sm text-gray-500">邮箱</p>
                             <p className="font-medium">{selectedNode.email}</p>
@@ -448,14 +508,12 @@
                     </div>
                   )}
 
-                  {/* 网络图画布 */}
                   <div className="flex-1 bg-white">
                     <svg ref={svgRef} className="w-full h-full"></svg>
                   </div>
                 </div>
               )}
 
-              {/* 上传模态框 */}
               {showUploadModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                   <div className="bg-white rounded-lg p-6 w-96">
@@ -491,9 +549,8 @@
           );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<NetworkVisualization />);
+        // 渲染应用（已改为兼容 UMD 的写法）
+        ReactDOM.render(<NetworkVisualization />, document.getElementById('root'));
     </script>
 </body>
 </html>
-
