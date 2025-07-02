@@ -70,14 +70,26 @@
             '专员': 1, '助理': 1, '实习生': 1
           };
 
-          // 示例数据
+          // 示例数据 - 包含部分XJTLU教授数据
           useEffect(() => {
             const sampleNodes = [
+              // XJTLU教授数据示例
+              { id: 'xjtlu_1', name: '陈峻松', company: '产金融合学院（太仓）', position: '院长/教授', industry: '教育', expertise: '消费者决策', email: 'Junsong.Chen@xjtlu.edu.cn', university: 'XJTLU', graduationYear: '', allExpertise: ['消费者决策', '品牌', '服务营销', '企业社会责任', '客户体验管理'] },
+              { id: 'xjtlu_2', name: '陈中硕', company: 'XJTLU', position: '教授', industry: '供应链', expertise: '海事脱碳和可持续航运', email: 'Zhongshuo.Chen@xjtlu.edu.cn', university: 'XJTLU', graduationYear: '', allExpertise: ['海事脱碳和可持续航运', '替代船用燃料和应用', '生命周期评估', '机器学习', '船舶燃料消耗和排放'] },
+              { id: 'xjtlu_3', name: 'Viet Linh Dang', company: 'XJTLU', position: '教授', industry: '供应链', expertise: '供应链管理中的人工智能', email: 'VietLinh.Dang@xjtlu.edu.cn', university: 'XJTLU', graduationYear: '', allExpertise: ['可持续采购', '供应链管理中的人工智能与机器学习', '仓库运营', '港口', '全球供应链', '决策科学'] },
+              
+              // 原有示例数据
               { id: '1', name: '张三', company: '创新科技', position: 'CEO', industry: '人工智能', expertise: '深度学习', phone: '13800138001', email: 'zhang@tech.com', university: '清华大学', graduationYear: '2010' },
               { id: '2', name: '李四', company: '未来投资', position: '合伙人', industry: '投资', expertise: '早期投资', phone: '13800138002', email: 'li@invest.com', university: '北京大学', graduationYear: '2008' }
             ];
 
             const sampleLinks = [
+              // AI识别的XJTLU教授之间的关系
+              { source: 'xjtlu_2', target: 'xjtlu_3', relationship: '共同研究: 供应链、机器学习；AI+供应链跨界', strength: 0.9, auto: true },
+              { source: 'xjtlu_1', target: '2', relationship: '潜在合作: 商业与投资', strength: 0.6, auto: true },
+              { source: 'xjtlu_3', target: '1', relationship: 'AI技术合作', strength: 0.7, auto: true },
+              
+              // 原有关系
               { source: '1', target: '2', relationship: '投资关系', strength: 0.8 }
             ];
 
