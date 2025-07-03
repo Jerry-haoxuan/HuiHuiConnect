@@ -250,38 +250,19 @@
 
               setProcessingStatus('正在解析数据...');
 
-              // AI表头智能识别映射
-              const fieldMap = {
-                name: ['姓名', 'name', '老师姓名', '教师', 'Name'],
-                company: ['公司', 'company', '单位', 'Organization'],
-                position: ['职位', 'position', '职称', 'Title'],
-                industry: ['行业', 'industry', '领域', 'Field'],
-                expertise: ['专长', 'expertise', '研究方向', '方向', 'Expertise'],
-                phone: ['电话', 'phone', '联系方式', 'Phone'],
-                email: ['邮箱', 'email', '邮件', 'Email'],
-                university: ['学校', '毕业院校', 'university', '院校', 'University'],
-                graduationYear: ['毕业年份', 'graduationYear', 'Year', '毕业时间']
-              };
-              const getField = (row, key) => {
-                for (let alias of fieldMap[key]) {
-                  if (row[alias] !== undefined && row[alias] !== null && row[alias] !== '') return row[alias];
-                }
-                return '';
-              };
-
-              // 转换数据格式（AI智能识别）
+              // 转换数据格式
               const newNodes = jsonData.map((row, index) => ({
                 id: `imported_${Date.now()}_${index}`,
-                name: getField(row, 'name'),
-                company: getField(row, 'company'),
-                position: getField(row, 'position'),
-                industry: getField(row, 'industry'),
-                expertise: getField(row, 'expertise'),
-                phone: getField(row, 'phone'),
-                email: getField(row, 'email'),
-                university: getField(row, 'university'),
-                graduationYear: getField(row, 'graduationYear')
-              })).filter(node => node.name);
+                name: row['姓名'] || row['name'] || '',
+                company: row['公司'] || row['company'] || '',
+                position: row['职位'] || row['position'] || '',
+                industry: row['行业'] || row['industry'] || '',
+                expertise: row['专长'] || row['expertise'] || '',
+                phone: row['电话'] || row['phone'] || '',
+                email: row['邮箱'] || row['email'] || '',
+                university: row['学校'] || row['毕业院校'] || row['university'] || '',
+                graduationYear: row['毕业年份'] || row['graduationYear'] || ''
+              })).filter(node => node.name); // 过滤掉没有姓名的行
 
               setProcessingStatus(`正在分析 ${newNodes.length} 条数据的关系网络...`);
 
@@ -478,8 +459,8 @@
             }
 
             const simulation = d3.forceSimulation(displayNodes)
-              .force('link', d3.forceLink(displayLinks).id(d => d.id).distance(d => 250))
-              .force('charge', d3.forceManyBody().strength(-300))
+              .force('link', d3.forceLink(displayLinks).id(d => d.id).distance(d => 150 * (1 - (d.strength || 0.5))))
+              .force('charge', d3.forceManyBody().strength(-400))
               .force('center', d3.forceCenter(width / 2, height / 2))
               .force('collision', d3.forceCollide().radius(50));
 
