@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XJTLU教授人脉关系可视化平台</title>
+    <title>精尚慧Ai人脉关系可视化平台</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -16,6 +16,31 @@
         }
         * {
             box-sizing: border-box;
+        }
+        .tree-link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
+        .tree-link.strong {
+            stroke: #666;
+            stroke-width: 3px;
+        }
+        .tree-node {
+            cursor: pointer;
+        }
+        .tree-node circle {
+            fill: #fff;
+            stroke-width: 3px;
+        }
+        .tree-node text {
+            font: 12px sans-serif;
+        }
+        .tree-node.internal circle {
+            fill: #fff;
+        }
+        .tree-node.leaf circle {
+            fill: #fff;
         }
     </style>
 </head>
@@ -82,41 +107,1307 @@
             };
           };
 
-          // XJTLU教授完整数据
+          // XJTLU教授完整数据（118位）
           useEffect(() => {
             const xjtluProfessors = [
-              {"id":"prof_1","name":"陈峻松","company":"产金融合学院（太仓）","position":"教授","industry":"教育","expertise":"消费者决策","email":"Junsong.Chen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["消费者决策","品牌","服务营销","企业社会责任","客户体验管理"]},
-              {"id":"prof_2","name":"陈中硕","company":"西交利物浦大学","position":"教授","industry":"人工智能","expertise":"海事脱碳和可持续航运","email":"Zhongshuo.Chen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["海事脱碳和可持续航运","替代船用燃料和应用","生命周期评估","机器学习","船舶燃料消耗和排放"]},
-              {"id":"prof_3","name":"Viet Linh Dang","company":"西交利物浦大学","position":"教授","industry":"人工智能","expertise":"供应链管理中的AI","email":"VietLinh.Dang@xjtlu.edu.cn","university":"XJTLU","allExpertise":["可持续采购、供应链管理中的人工智能与机器学习、仓库运营、港口、全球供应链、决策科学、信息计量学"]},
-              {"id":"prof_4","name":"谢智","company":"西交利物浦大学","position":"教授","industry":"供应链","expertise":"集成产品开发","email":"Zhi.Xie@xjtlu.edu.cn","university":"XJTLU","allExpertise":["PD：集成产品开发；3C（客户服务、成本降低和现金流）价值采购","采购内部控制制度","企业的采购组织、流程与信息技术应用","DDSC：需求驱动型供应链管理及其创业应用","ISC：集成供应链管理及其创业应用"]},
-              {"id":"prof_5","name":"沈月林","company":"西交利物浦大学","position":"教授","industry":"供应链","expertise":"供应链管理","email":"Yuelin.Shen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["供应链管理","数字经济和电子商务"]},
-              {"id":"prof_6","name":"刘志彬","company":"产金融合学院访问教授","position":"教授","industry":"供应链","expertise":"供应链与高科技产业","email":"Zhibin.Liu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["供应链与高科技产业","精益生产与TOC"]},
-              {"id":"prof_7","name":"王玉容","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"数字化转型","email":"Yurong.Wang@xjtlu.edu.cn","university":"XJTLU","allExpertise":["长三角工业互联网主任，数字化转型","企业环境、社会和治理（ESG）和可持续发展以及人工智能辅助的语言服务"]},
-              {"id":"prof_8","name":"钱国新","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"企业管理","email":"Guoxin.Qian@xjtlu.edu.cn","university":"XJTLU","allExpertise":["招商局等多家跨国企业首席代表"]},
-              {"id":"prof_9","name":"陈伟","company":"芯片学院（太仓）","position":"教授","industry":"人工智能","expertise":"智能芯片与传感技术","email":"Wei.Chen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["智能芯片与传感技术；","集成电路微纳工艺；","芯片设计与功耗管理；","智能感知与物联网系统。"]},
-              {"id":"prof_10","name":"Jang Yong Kim","company":"西交利物浦大学","position":"教授","industry":"新材料","expertise":"先进功能薄膜材料","email":"JangYong.Kim@xjtlu.edu.cn","university":"XJTLU","allExpertise":["开发具有广泛应用的先进功能薄膜材料，包括陶瓷合成、薄膜生长技术、微纳制造（MEMS/NEMS）的光刻加工解决方案、纳米级工程、铁电/电介质、铁磁性、超材料、半导体、超导体、自旋电子学、传感器、生物电子学、纳米电子学、射频与微波、存储器技术，并将纳米科学的基础知识应用于科学仪器、在线材料表征和改性。"]},
-              {"id":"prof_11","name":"Sami Makela","company":"芯片学院访问教授","position":"教授","industry":"人工智能","expertise":"系统芯片(SoC)设计","email":"Sami.Makela@xjtlu.edu.cn","university":"XJTLU","allExpertise":["系统芯片(SoC)设计、第五代移动通信(5G)技术和半导体创新。"]},
-              {"id":"prof_12","name":"Dong Xu","company":"人工智能与先进计算学院（太仓）","position":"教授","industry":"人工智能","expertise":"深度学习和计算机视觉","email":"Dong.Xu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["深度学习和计算机视觉、多媒体理解、无人机视频分析、稳健深度模型和人体动作识别等。"]},
-              {"id":"prof_13","name":"Anton Vedeshin","company":"西交利物浦大学","position":"教授","industry":"人工智能","expertise":"算法设计","email":"Anton.Vedeshin@xjtlu.edu.cn","university":"XJTLU","allExpertise":["算法设计、机器学习、教育技术、认知科学。"]},
-              {"id":"prof_14","name":"Yongting Chen","company":"人工智能与先进计算学院访问教授","position":"教授","industry":"人工智能","expertise":"深度学习","email":"Yongting.Chen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["人工智能","深度学习","机器学习等"]},
-              {"id":"prof_15","name":"Alexandros Gasparatos","company":"智能生态学院访问教授","position":"教授","industry":"新能源","expertise":"生态系统服务","email":"Alexandros.Gasparatos@xjtlu.edu.cn","university":"XJTLU","allExpertise":["生态系统服务","食物安全和农业可持续性的粮食-能源-水关系","可持续发展科学"]},
-              {"id":"prof_16","name":"王旻","company":"物联网学院（太仓）","position":"教授","industry":"人工智能","expertise":"物联网安全","email":"Min.Wang@xjtlu.edu.cn","university":"XJTLU","allExpertise":["物联网、智能电网、无线通信网络及传感器网络安全"]},
-              {"id":"prof_17","name":"陆辉","company":"西交利物浦大学","position":"教授","industry":"人工智能","expertise":"物联网","email":"Hui.Lu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["物联网；传感器网络；智能系统；数据管理与分析"]},
-              {"id":"prof_18","name":"罗文正","company":"物联网学院访问教授","position":"教授","industry":"人工智能","expertise":"通信与信息系统","email":"Wenzheng.Luo@xjtlu.edu.cn","university":"XJTLU","allExpertise":["通信与信息系统"]},
-              {"id":"prof_19","name":"刘恩克","company":"智能机器人学院（太仓）","position":"教授","industry":"人工智能","expertise":"智能机器人","email":"Enke.Liu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["智能机器人"]},
-              {"id":"prof_20","name":"戴雷 Ray","company":"西交利物浦大学","position":"教授","industry":"人工智能","expertise":"智能机器人技术","email":"Lei.Dai@xjtlu.edu.cn","university":"XJTLU","allExpertise":["智能机器人技术、人工智能、云机器人、机器人操作系统（ROS）2.0和深度学习。"]},
-              {"id":"prof_21","name":"Yuchun Liu","company":"智能机器人学院访问教授","position":"教授","industry":"人工智能","expertise":"机器人与自主系统","email":"Yuchun.Liu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["机器人与自主系统的多传感器融合与协作"]},
-              {"id":"prof_22","name":"朱蓉","company":"理学院（园区）","position":"教授","industry":"教育","expertise":"金融数学","email":"Rong.Zhu@xjtlu.edu.cn","university":"XJTLU","allExpertise":["金融数学、随机分析、概率论"]},
-              {"id":"prof_23","name":"Rihuan Ke","company":"商学院（园区）","position":"教授","industry":"投资","expertise":"创业管理","email":"Rihuan.Ke@xjtlu.edu.cn","university":"XJTLU","allExpertise":["创业管理","知识产权管理","科学技术政策"]},
-              {"id":"prof_24","name":"闫娟","company":"智能工程学院（园区）","position":"教授","industry":"建筑工程","expertise":"智能建造","email":"Juan.Yan@xjtlu.edu.cn","university":"XJTLU","allExpertise":["智能建造","应急安全系统","应急避难场所","智慧城市","数字孪生技术","智能计算技术"]},
-              {"id":"prof_25","name":"楼瑛","company":"慧湖药学院","position":"教授","industry":"生物科技","expertise":"药物开发","email":"Ying.Lou@xjtlu.edu.cn","university":"XJTLU","allExpertise":["参与或主导开发了多种销售领先的药物，涵盖感染、肿瘤、心血管、代谢、呼吸和神经等疾病领域。例如，主导开发了用于治疗COVID-19的瑞德西韦的静脉注射制剂，短短8个月内从临床前阶段推进到新药申请（NDA）提交，并获得FDA的EUA批准"]},
-              {"id":"prof_26","name":"王牧","company":"慧湖药学院（产业教授）","position":"教授","industry":"生物科技","expertise":"药学研究","email":"Mu.Wang@xjtlu.edu.cn","university":"XJTLU","allExpertise":["药学研究"]},
-              // 继续添加所有剩余的教授数据...
-              {"id":"prof_27","name":"陈晨","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"学术研究","email":"Chen.Chen@xjtlu.edu.cn","university":"XJTLU","allExpertise":["金融与工商管理"]},
-              {"id":"prof_28","name":"卞毓宁","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"学术研究","email":"Yuning.Bian@xjtlu.edu.cn","university":"XJTLU","allExpertise":["金融与工商管理"]},
-              {"id":"prof_29","name":"董岳","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"学术研究","email":"Yue.Dong@xjtlu.edu.cn","university":"XJTLU","allExpertise":["金融与工商管理"]},
-              {"id":"prof_30","name":"凡旭良","company":"西交利物浦大学","position":"教授","industry":"教育","expertise":"学术研究","email":"Xuliang.Fan@xjtlu.edu.cn","university":"XJTLU","allExpertise":["金融与工商管理"]}
-              // 注：为了演示效果，这里只展示了前30位教授。实际应用中应包含全部118位教授数据
+              {
+                id: "prof_1",
+                name: "陈峻松",
+                company: "产金融合学院（太仓）",
+                position: "教授",
+                industry: "教育",
+                expertise: "消费者决策",
+                email: "Junsong.Chen@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["消费者决策","品牌","服务营销","企业社会责任","客户体验管理"]
+              },
+              {
+                id: "prof_2",
+                name: "陈中硕",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "海事脱碳和可持续航运",
+                email: "Zhongshuo.Chen@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["海事脱碳和可持续航运","替代船用燃料和应用","生命周期评估","机器学习","船舶燃料消耗和排放"]
+              },
+              {
+                id: "prof_3",
+                name: "Viet Linh Dang",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "可持续采购、供应链管理中的人工智能与机器学习、仓库运营、港口、全球供应链、决策科学、信息计量学",
+                email: "VietLinh.Dang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["可持续采购、供应链管理中的人工智能与机器学习、仓库运营、港口、全球供应链、决策科学、信息计量学"]
+              },
+              {
+                id: "prof_4",
+                name: "谢智",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "供应链",
+                expertise: "PD：集成产品开发；3C（客户服务、成本降低和现金流）价值采购",
+                email: "Zhi.Xie@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["PD：集成产品开发；3C（客户服务、成本降低和现金流）价值采购","采购内部控制制度","企业的采购组织、流程与信息技术应用","DDSC：需求驱动型供应链管理及其创业应用","ISC：集成供应链管理及其创业应用"]
+              },
+              {
+                id: "prof_5",
+                name: "沈月林",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "供应链",
+                expertise: "供应链管理",
+                email: "Yuelin.Shen@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["供应链管理","数字经济和电子商务"]
+              },
+              {
+                id: "prof_6",
+                name: "刘志彬",
+                company: "产金融合学院访问教授",
+                position: "教授",
+                industry: "供应链",
+                expertise: "供应链与高科技产业",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["供应链与高科技产业"]
+              },
+              {
+                id: "prof_7",
+                name: "王玉容",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "长三角工业互联网主任，数字化转型",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["长三角工业互联网主任，数字化转型"]
+              },
+              {
+                id: "prof_8",
+                name: "钱国新",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "招商局等多家跨国企业首席代表",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["招商局等多家跨国企业首席代表"]
+              },
+              {
+                id: "prof_9",
+                name: "陈伟",
+                company: "芯片学院（太仓）",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "智能芯片与传感技术；",
+                email: "Wei.Chen03@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["智能芯片与传感技术；","新型半导体芯片材料；","等离子体及其在医疗中的应用；","可穿戴技术芯片；糖尿病及早期癌症的检测与预防"]
+              },
+              {
+                id: "prof_10",
+                name: "Jang Yong Kim",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "开发具有广泛应用的先进功能薄膜材料，包括陶瓷合成、薄膜生长技术、微纳制造（MEMS/NEMS）的光刻加工解决方案、纳米级工程、铁电/电介质、铁磁性、超材料、半导体、超导体、自旋电子学、传感器、生物电子学、纳米电子学、射频与微波、存储器技术，并将纳米科学的基础知识应用于科学仪器、在线材料表征和改性。",
+                email: "JangYong.Kim@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["开发具有广泛应用的先进功能薄膜材料，包括陶瓷合成、薄膜生长技术、微纳制造（MEMS/NEMS）的光刻加工解决方案、纳米级工程、铁电/电介质、铁磁性、超材料、半导体、超导体、自旋电子学、传感器、生物电子学、纳米电子学、射频与微波、存储器技术，并将纳米科学的基础知识应用于科学仪器、在线材料表征和改性。"]
+              },
+              {
+                id: "prof_11",
+                name: "Amer Kotb",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "使用不同的光波导研究和模拟全光逻辑器件，例如硅波导、超材料波导和不同的 SOA 技术",
+                email: "Amer.Kotb@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["使用不同的光波导研究和模拟全光逻辑器件，例如硅波导、超材料波导和不同的 SOA 技术"]
+              },
+              {
+                id: "prof_12",
+                name: "张洁",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "宽禁带半导体材料",
+                email: "Jie.Zhang06@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["宽禁带半导体材料","半导体器件"]
+              },
+              {
+                id: "prof_13",
+                name: "余明斌",
+                company: "芯片学院访问教授",
+                position: "教授",
+                industry: "教育",
+                expertise: "硅基光子学和光电子集成技术及应用",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["硅基光子学和光电子集成技术及应用"]
+              },
+              {
+                id: "prof_14",
+                name: "张浩",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "高性能计算系统、高性能AI芯片、AI驱动的材料计算及高性能互连网络设计",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["高性能计算系统、高性能AI芯片、AI驱动的材料计算及高性能互连网络设计"]
+              },
+              {
+                id: "prof_15",
+                name: "宋克楠",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "精通量子力学与多体物理理论，尤其在量子输运理论、线性响应理论和久保公式领域造诣深厚，",
+                email: "暂无，和院长有关系",
+                university: "XJTLU",
+                allExpertise: ["精通量子力学与多体物理理论，尤其在量子输运理论、线性响应理论和久保公式领域造诣深厚，","对凝聚态物理中电子与磁子的量子输运、自旋动力学、自旋轨道矩效应及量子反常霍尔效应具有深刻理解"]
+              },
+              {
+                id: "prof_16",
+                name: "张卫东（访问教授+博士生导师）",
+                company: "人工智能与先进计算学院（太仓）",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "人工智能，智能控制，无人驾驶",
+                email: "wdzhang@sjtu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["人工智能，智能控制，无人驾驶"]
+              },
+              {
+                id: "prof_17",
+                name: "张迪",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "人工智能，计算机科学",
+                email: "Di.Zhang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["人工智能，计算机科学"]
+              },
+              {
+                id: "prof_18",
+                name: "Affan Yasin",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "软件工程，数据库开发",
+                email: "Affan.Yasin@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["软件工程，数据库开发"]
+              },
+              {
+                id: "prof_19",
+                name: "徐鹏景",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "神经生理学，心理物理学，人工智能；创建贝叶斯自适应多模块坐标算法 （BAMCA） 的研发工作。该算法已被证明可以为患有各种眼部疾病（包括青光眼、糖尿病性视网膜病变、早期白内障和年龄相关性黄斑变性）的患者提供准确、精确和高效的视野映射",
+                email: "Pengjing.Xu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["神经生理学，心理物理学，人工智能；创建贝叶斯自适应多模块坐标算法 （BAMCA） 的研发工作。该算法已被证明可以为患有各种眼部疾病（包括青光眼、糖尿病性视网膜病变、早期白内障和年龄相关性黄斑变性）的患者提供准确、精确和高效的视野映射"]
+              },
+              {
+                id: "prof_20",
+                name: "王建嘉",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "模式识别中的统计机制",
+                email: "Jianjia.Wang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["模式识别中的统计机制","复杂网络","适用于图形和网络的机器学习","热力学和量子统计"]
+              },
+              {
+                id: "prof_21",
+                name: "苏炯龙",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "人工智能",
+                email: "Jionglong.Su@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["人工智能","生物信息学"]
+              },
+              {
+                id: "prof_22",
+                name: "Angelos Stefanidis",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "计算机科学",
+                email: "Angelos.Stefanidis@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["计算机科学"]
+              },
+              {
+                id: "prof_23",
+                name: "Maruf Hasan",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "自然语言处理",
+                email: "MdMaruf.Hasan@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["自然语言处理","机器学习","人工智能","知识表示（本体、知识图谱和语义 Web 技术）","智能信息处理（信息检索、信息提取、主题识别和情感分析等）","人工智能应用（个性化在线学习、数字图书馆和档案、大数据分析、灾害管理和国家安全等）"]
+              },
+              {
+                id: "prof_24",
+                name: "江南",
+                company: "人工智能与先进计算学院访问教授",
+                position: "教授",
+                industry: "建筑工程",
+                expertise: "以人为本的设计（HCD）和网络开发",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["以人为本的设计（HCD）和网络开发"]
+              },
+              {
+                id: "prof_25",
+                name: "David Lu",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "平台即服务（PaaS）和软件即服务（SaaS）、政策控制与编排，以及通过AI/ML驱动的预测性",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["平台即服务（PaaS）和软件即服务（SaaS）、政策控制与编排，以及通过AI/ML驱动的预测性"]
+              },
+              {
+                id: "prof_26",
+                name: "田春伟",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "图像修复、视频修复、医学图像处理、图像识别；机器学习：深度学习和稀疏表示；主要研究项目：噪声容忍度计算和灵活的基层视觉任务",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["图像修复、视频修复、医学图像处理、图像识别；机器学习：深度学习和稀疏表示；主要研究项目：噪声容忍度计算和灵活的基层视觉任务"]
+              },
+              {
+                id: "prof_27",
+                name: "陆小龙",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "先进材料加工",
+                email: "Xiaolong.Lu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["先进材料加工","表面工程和摩擦学","增材制造"]
+              },
+              {
+                id: "prof_28",
+                name: "谢心怡",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "主要：海洋观测、断层扫描、反演方法、数据驱动方法",
+                email: "Xinyi.Xie@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["主要：海洋观测、断层扫描、反演方法、数据驱动方法","次要：多传感器信息识别、光纤分布式传感、能量收集"]
+              },
+              {
+                id: "prof_29",
+                name: "展波",
+                company: "智能生态学院访问教授",
+                position: "教授",
+                industry: "教育",
+                expertise: "财务，管理，战略转化",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["财务，管理，战略转化"]
+              },
+              {
+                id: "prof_30",
+                name: "Rowan Melrose",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "采矿服务、采矿消耗品、运营和制造方面",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["采矿服务、采矿消耗品、运营和制造方面"]
+              },
+              {
+                id: "prof_31",
+                name: "叶茂",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "精密制造与智能制造领域资深专家",
+                email: "暂无，与学院有关系",
+                university: "XJTLU",
+                allExpertise: ["精密制造与智能制造领域资深专家"]
+              },
+              {
+                id: "prof_32",
+                name: "胡斌涛",
+                company: "物联网学院（太仓）",
+                position: "教授",
+                industry: "教育",
+                expertise: "5G/6G 使能技术：网络架构、资源分配、接口和传输技术",
+                email: "Bintao.Hu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["5G/6G 使能技术：网络架构、资源分配、接口和传输技术","云/边缘/雾/设备计算辅助无线接入网络;","移动机器人物体的无线联网控制：自动驾驶和物联网工业自动化;","通信、计算等的集成和协调。","U2X/V2X/D2D 通信"]
+              },
+              {
+                id: "prof_33",
+                name: "刘悦",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "物联网，材料学",
+                email: "Yue.Liu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["物联网，材料学"]
+              },
+              {
+                id: "prof_34",
+                name: "Karim H. Moussa",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "物联网在健康监测和环境控制、数字信号处理、",
+                email: "Karim.Moussa@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["物联网在健康监测和环境控制、数字信号处理、","多媒体、数据安全、通信网络、移动通信系统、多用户 MIMO 系统、大规模 MIMO 和工程优化中的应用"]
+              },
+              {
+                id: "prof_35",
+                name: "PAUL DAVIDSSON",
+                company: "物联网学院访问教授",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "代理技术、人工智能、信息系统、计",
+                email: "暂无，与学院有关",
+                university: "XJTLU",
+                allExpertise: ["代理技术、人工智能、信息系统、计","算机模拟和数据挖掘"]
+              },
+              {
+                id: "prof_36",
+                name: "邓和浦",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "计算机与数学应用",
+                email: "暂无，与学院有关",
+                university: "XJTLU",
+                allExpertise: ["计算机与数学应用","、互联网研究、交通研究A、F部分"]
+              },
+              {
+                id: "prof_37",
+                name: "彭国超",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "企业信息化、信息系统管理、数字化转型、智慧城市、智慧医疗、科技评价",
+                email: "暂无，与学院有关",
+                university: "XJTLU",
+                allExpertise: ["企业信息化、信息系统管理、数字化转型、智慧城市、智慧医疗、科技评价"]
+              },
+              {
+                id: "prof_38",
+                name: "黄远睿",
+                company: "智能机器人学院（太仓）",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "医疗机器人和系统、柔性机器人和磁驱动和定位",
+                email: "Yuanrui.Huang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["医疗机器人和系统、柔性机器人和磁驱动和定位"]
+              },
+              {
+                id: "prof_39",
+                name: "江浩川",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "使用深度学习模型进行医学图像分析",
+                email: "h.jiang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["使用深度学习模型进行医学图像分析","生成模型、解纠缠表示学习、深度模型的图像分割;","深度学习、机器学习、计算机视觉"]
+              },
+              {
+                id: "prof_40",
+                name: "Ibrahim Mustafa Mehedi",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "材料科学，电气与计算机工程",
+                email: "Ibrahim.Mehedi@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["材料科学，电气与计算机工程"]
+              },
+              {
+                id: "prof_41",
+                name: "巩相峰",
+                company: "智能机器人学院访问教授",
+                position: "教授",
+                industry: "教育",
+                expertise: "机器人领军",
+                email: "暂无，与学院有关",
+                university: "XJTLU",
+                allExpertise: ["机器人领军"]
+              },
+              {
+                id: "prof_42",
+                name: "朱本",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "工业自动化，机器人技术",
+                email: "暂无，与学院有关",
+                university: "XJTLU",
+                allExpertise: ["工业自动化，机器人技术"]
+              },
+              {
+                id: "prof_43",
+                name: "John Moraros",
+                company: "理学院（园区）",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "社区生态建设，分子生物学",
+                email: "John.Moraros@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["社区生态建设，分子生物学"]
+              },
+              {
+                id: "prof_44",
+                name: "杨莉",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "独特微结构纳米材料及其物理/化学研究,在表面改性、单分子器件、能源存储器件、有机发光器件、化学涂层表界面分析、薄膜材料形貌控制和表征等方面取得过多项成果。曾主持研制开发了有机材料深度分析的复杂多层薄膜标准材料,实现了产品的商业化",
+                email: "Li.Yang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["独特微结构纳米材料及其物理/化学研究,在表面改性、单分子器件、能源存储器件、有机发光器件、化学涂层表界面分析、薄膜材料形貌控制和表征等方面取得过多项成果。曾主持研制开发了有机材料深度分析的复杂多层薄膜标准材料,实现了产品的商业化"]
+              },
+              {
+                id: "prof_45",
+                name: "Sekar Raju",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "用于识别流域粪便污染的微生物源追踪技术",
+                email: "Sekar.Raju@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["用于识别流域粪便污染的微生物源追踪技术","水生环境中的抗生素耐药细菌和耐药基因","与微塑料相关的微生物组和塑料降解微生物的潜力","与公共卫生相关的水源性病原体分子检测","自然和工程系统中的微生物生物膜"]
+              },
+              {
+                id: "prof_46",
+                name: "Jia Meng",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "用于 RNA 修饰和表观转录组学的生物信息学",
+                email: "Jia.Meng@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["用于 RNA 修饰和表观转录组学的生物信息学","机器学习 面向生物医学的深度学习","mRNA 疫苗和 RNA 疗法中的 RNA 修饰","单细胞转录组学和表观转录组学建模和分析","下一代测序：Illumina 和 Nanopore 测序","生物信息学数据库和 Web 工具","系统生物学"]
+              },
+              {
+                id: "prof_47",
+                name: "Lifeng Ding",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "随着现代计算技术的出现，现在可以通过原子模拟和机器学习技术研究和预测材料的特性。这些数字工具已成为研究纳米级材料的最强大和最有效的方法之一。我的研究重点是利用这些数字工具来探索具有重要科学和技术价值的各种纳米材料。",
+                email: "Lifeng.Ding@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["随着现代计算技术的出现，现在可以通过原子模拟和机器学习技术研究和预测材料的特性。这些数字工具已成为研究纳米级材料的最强大和最有效的方法之一。我的研究重点是利用这些数字工具来探索具有重要科学和技术价值的各种纳米材料。"]
+              },
+              {
+                id: "prof_48",
+                name: "Jorg Bley",
+                company: "商学院（园区）",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: "Jorg.Bley@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_49",
+                name: "方世豪",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: " Eddy.Fang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_50",
+                name: "王鹤菲",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: " Hefei.Wang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_51",
+                name: "Ewout van der Schaft",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: " Ewout.Schaft@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_52",
+                name: "Nimesh Salike",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: "Nimesh.Salike@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_53",
+                name: "Pavel Castka",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "国际标准化ISO定义，供应链，金融与工商管理",
+                email: "Pavel.Castka@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["国际标准化ISO定义，供应链，金融与工商管理"]
+              },
+              {
+                id: "prof_54",
+                name: "钱力显",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "投资",
+                expertise: "金融与工商管理",
+                email: "Lixian.Qian@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["金融与工商管理"]
+              },
+              {
+                id: "prof_55",
+                name: "Ellen Touchstone",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新能源",
+                expertise: "可持续性",
+                email: "Ellen.Touchstone@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["可持续性"]
+              },
+              {
+                id: "prof_56",
+                name: "陈敏",
+                company: "智能工程学院（园区）",
+                position: "教授",
+                industry: "建筑工程",
+                expertise: "结构的多物理场分析",
+                email: "Min.Chen@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["结构的多物理场分析","产品设计","结构的可靠性设计和分析","复合材料的多尺度分析"]
+              },
+              {
+                id: "prof_57",
+                name: "Eng Gee Lim",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "人工智能、AI+ 医疗保健、机器人、智能家居、射频和微波应用，包括：天线;过滤 器;双工器;耦合;无线射频识别（RFID）;超宽带;WIMAX;3G/4G/5G 移动通信网络;无线胶囊内窥镜检查;电磁测量和仿真;协作和认知无线通信网络;智能电网通信;机器人网络技术;用于智能和绿色城市的无线通信网络（例如手机 APP、公共交通信息）",
+                email: "enggee.lim@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["人工智能、AI+ 医疗保健、机器人、智能家居、射频和微波应用，包括：天线;过滤 器;双工器;耦合;无线射频识别（RFID）;超宽带;WIMAX;3G/4G/5G 移动通信网络;无线胶囊内窥镜检查;电磁测量和仿真;协作和认知无线通信网络;智能电网通信;机器人网络技术;用于智能和绿色城市的无线通信网络（例如手机 APP、公共交通信息）"]
+              },
+              {
+                id: "prof_58",
+                name: "孙捷",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "用于医疗保健产品设计的 3D 打印",
+                email: "Jie.Sun@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["用于医疗保健产品设计的 3D 打印","仿生脚手架制造","智能过程监控、机电一体化仪表"]
+              },
+              {
+                id: "prof_59",
+                name: "王秋锋",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "数学推理",
+                email: "Qiufeng.Wang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["数学推理","文档分析和识别","模式识别","计算机视觉"]
+              },
+              {
+                id: "prof_60",
+                name: "Zhijie Xu",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "计算机图形学，几何，（VR/AR/MR/XR）、实时图形、交互式可视化、机器视觉、机器人技术、智能系统、计算语言学、机器学习和计算机体系结构",
+                email: "Zhijie.Xu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["计算机图形学，几何，（VR/AR/MR/XR）、实时图形、交互式可视化、机器视觉、机器人技术、智能系统、计算语言学、机器学习和计算机体系结构"]
+              },
+              {
+                id: "prof_61",
+                name: "薛飞",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新能源",
+                expertise: "电力系统安全;复杂网络;能源互联网;电动汽车",
+                email: "Fei.Xue@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["电力系统安全;复杂网络;能源互联网;电动汽车"]
+              },
+              {
+                id: "prof_62",
+                name: "陈鹰",
+                company: "慧湖药学院",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "真实医学研究",
+                email: "Ying.Chen01@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["真实医学研究","大数据分析 - 电子健康数据库","应用医学统计学","实验研究 - 临床试验","观察性研究 - 流行病学","环境流行病学"]
+              },
+              {
+                id: "prof_63",
+                name: "丁大伟",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "（1） 通过生物相容性纳米药物（化疗、光疗、免疫疗法等）进行协同肿瘤治疗",
+                email: "Dawei.Ding@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["（1） 通过生物相容性纳米药物（化疗、光疗、免疫疗法等）进行协同肿瘤治疗","（2） 透皮给药系统（贴剂、微针等）","（3） 口服和局部给药系统（缓释微粒等）","（4） 微流控及其在生物医学中的应用"]
+              },
+              {
+                id: "prof_64",
+                name: "Lei Fu",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "使用细胞色素 c 氧化酶的仿生模型进行人体冬眠研究。",
+                email: "Lei.Fu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["使用细胞色素 c 氧化酶的仿生模型进行人体冬眠研究。","医疗器械作为靶向药物输送系统","作为植物药妆品的中药","原料药及相关物质的工艺研究","代谢和神经退行性疾病的药物发现和开发"]
+              },
+              {
+                id: "prof_65",
+                name: "辜金鑫",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "神经退行性疾病的新型治疗干预",
+                email: "Jinxin.Gu02@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["神经退行性疾病的新型治疗干预","线粒体代谢与衰老相关疾病","使用秀丽隐杆线虫模型进行药物发现"]
+              },
+              {
+                id: "prof_66",
+                name: "韩国霞",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "自组装纳米生物材料与药物递送",
+                email: "Guoxia.Han@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["自组装纳米生物材料与药物递送","新型肽药物的设计与合成","绿色化学和不对称合成","制药工艺和发展"]
+              },
+              {
+                id: "prof_67",
+                name: "何晋元",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "新材料",
+                expertise: "病毒和非病毒基因编辑",
+                email: "JinYuan.Ho@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["病毒和非病毒基因编辑","肿瘤相关蛋白靶标的纳米抗体筛选","细胞疗法，包括 CAR-T 和 TIL"]
+              },
+              {
+                id: "prof_68",
+                name: "柳欣",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "通路之间的串扰系统分析，促进系统级了解人类疾病和药物靶点识别",
+                email: "Xin.Liu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["通路之间的串扰系统分析，促进系统级了解人类疾病和药物靶点识别","开发基于机器学习的定量构效关系 （QSAR） 方法，用于新药命中高通量筛选","通过高通量发现生物标志物 – 通过结合多重随机采样的共识评分和基因排序一致性的多步骤评估进行组学数据挖掘，以最大限度地避免预测基因的错误消除"]
+              },
+              {
+                id: "prof_69",
+                name: "阮刚",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "纳米材料、生物递送和成像、干细胞和再生医学、神经医学技术",
+                email: "Gang.Ruan@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["纳米材料、生物递送和成像、干细胞和再生医学、神经医学技术"]
+              },
+              {
+                id: "prof_70",
+                name: "王宜强",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "免疫学：感染免疫学，如病毒感染机制（关键词包括 FlgE、SARS-CoV-2、NLRP3 等）。",
+                email: "Yiqiang.Wang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["免疫学：感染免疫学，如病毒感染机制（关键词包括 FlgE、SARS-CoV-2、NLRP3 等）。","分子和细胞生物学：新基因（如 MXRA7）的生物学和功能表征，或旧基因（如异位 ATP 合酶）的新功能","眼科学 ： 眼科学生理学、眼部疾病的发病机制和实验治疗等。正在进行的项目包括干眼症、纤溶酶原缺乏症引起的木质结膜炎的 CGT、工程角膜等。","癌症生物学：主要在癌症-血小板相互作用中"]
+              },
+              {
+                id: "prof_71",
+                name: "Ruiyao Wang",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "基于晶体工程和配位化学的药物化学，旨在开发以超分子化学、配位和/或有机金属化学和晶体工程为基础的新药，如药物多晶型、药物共结晶以及基于 Pt（IV） 复合物的前药。目前，Wangs 博士的研究重点是 1） 新型药物共晶体的开发;2） 用于抗肿瘤药物的新型药物药物共晶体;3） 用于抗肿瘤应用的基于 Pt（IV） 复合物的靶向前药;4） 药物制剂",
+                email: "Ruiyao.Wang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["基于晶体工程和配位化学的药物化学，旨在开发以超分子化学、配位和/或有机金属化学和晶体工程为基础的新药，如药物多晶型、药物共结晶以及基于 Pt（IV） 复合物的前药。目前，Wangs 博士的研究重点是 1） 新型药物共晶体的开发;2） 用于抗肿瘤药物的新型药物药物共晶体;3） 用于抗肿瘤应用的基于 Pt（IV） 复合物的靶向前药;4） 药物制剂"]
+              },
+              {
+                id: "prof_72",
+                name: "吴思晋",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "计算机辅助药物设计和发现",
+                email: "Sijin.Wu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["计算机辅助药物设计和发现","蛋白质动力学","蛋白质-蛋白质相互作用","抗体设计与开发"]
+              },
+              {
+                id: "prof_73",
+                name: "徐培程",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "可调节的特殊液晶材料：刺激响应致动器、新型生物医学设备",
+                email: "Peicheng.Xu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["可调节的特殊液晶材料：刺激响应致动器、新型生物医学设备","由 DNA 纳米技术驱动的多功能设备：具有高灵敏度和特异性的生物传感器、单分子检测技术、高效的光伏板","以需求为导向的智能水凝胶系统：仿生器官的制造及其相应的医学研究"]
+              },
+              {
+                id: "prof_74",
+                name: "张佳柠",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "使用 2D 纳米粒子的抗癌药物递送和机械化",
+                email: "Jianing.Zhang@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["使用 2D 纳米粒子的抗癌药物递送和机械化","药物对黑磷 （bp） 进行表面改性，提高 bp 的稳定性，同时降低耐药性"]
+              },
+              {
+                id: "prof_75",
+                name: "张宁",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "监管",
+                email: "Ning.Zhang02@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["监管","化学、制造与控制评价","制药学"]
+              },
+              {
+                id: "prof_76",
+                name: "周昊津",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "人工智能",
+                expertise: "药物研发统计",
+                email: "Haojin.Zhou@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["药物研发统计","机器学习的应用和基础知识","特别关注等方差准则的统计推断","医学数据分析方法开发","精准医疗"]
+              },
+              {
+                id: "prof_77",
+                name: "朱飞",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "（1） 使用患者来源的肿瘤类器官进行成药性评价（药物疗效、药物摄取、药物安全性和耐药性）。",
+                email: "Fei.Zhu@xjtlu.edu.cn",
+                university: "XJTLU",
+                allExpertise: ["（1） 使用患者来源的肿瘤类器官进行成药性评价（药物疗效、药物摄取、药物安全性和耐药性）。","（2） 使用多能干细胞衍生的功能细胞/类器官对癌症、代谢、神经退行性或炎症性疾病进行治疗干预。","（3） 使用新型细胞重编程技术的疾病建模和治疗药物筛选。","（4） 用于细胞重编程或细胞治疗的多功能生物材料的开发。"]
+              },
+              {
+                id: "prof_78",
+                name: "陈炳良博士",
+                company: "慧湖药学院（产业教授）",
+                position: "教授",
+                industry: "生物科技",
+                expertise: "首席科学家；曾就职多家国际药企",
+                email: "",
+                university: "XJTLU",
+                allExpertise: ["首席科学家；曾就职多家国际药企"]
+              },
+              {
+                id: "prof_79",
+                name: "冯辉博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_80",
+                name: "胡逸民博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_81",
+                name: "黄保华博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_82",
+                name: "江宁军博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_83",
+                name: "李景荣博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_84",
+                name: "李治中博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_85",
+                name: "刘刚",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_86",
+                name: "马振坤博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_87",
+                name: "潘德京博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_88",
+                name: "任辉博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_89",
+                name: "舒占永博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_90",
+                name: "田长麟教授",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_91",
+                name: "谢雨礼博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_92",
+                name: "杨义力教授",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_93",
+                name: "尹湛峰博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_94",
+                name: "尹生博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_95",
+                name: "英博博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_96",
+                name: "余强博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_97",
+                name: "张连山博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_98",
+                name: "周俊东教授",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_99",
+                name: "周勤伟博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_100",
+                name: "刘青华",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_101",
+                name: "张佩琢",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_102",
+                name: "杨大俊教授",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_103",
+                name: "董欣博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_104",
+                name: "张亚飞博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_105",
+                name: "赵晓剑博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_106",
+                name: "Scott M Wheelwright 博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_107",
+                name: "汤郡博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_108",
+                name: "孙秀莲博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_109",
+                name: "张喆博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_110",
+                name: "王立群 博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_111",
+                name: "Angela Wong Ph.D",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_112",
+                name: "季清洲博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_113",
+                name: "翟一帆博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_114",
+                name: "曹国英",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_115",
+                name: "武晓捷博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_116",
+                name: "林洁博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_117",
+                name: "刘笑芬博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              },
+              {
+                id: "prof_118",
+                name: "任科云博士",
+                company: "西交利物浦大学",
+                position: "教授",
+                industry: "教育",
+                expertise: "学术研究",
+                email: "",
+                university: "XJTLU",
+                allExpertise: []
+              }
             ];
 
             // 生成关系网络
@@ -217,6 +1508,12 @@
             </svg>
           );
 
+          const SparklesIcon = () => (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          );
+
           // 人物卡片组件
           const PersonCard = ({ person, onViewNetwork }) => {
             const industryColors = {
@@ -285,44 +1582,64 @@
             );
           };
 
-          // D3.js 网络图渲染
+          // 树形布局D3.js渲染
           useEffect(() => {
-            if (currentView !== 'network' || !svgRef.current || nodes.length === 0) return;
+            if (currentView !== 'network' || !svgRef.current || nodes.length === 0 || !focusedPerson) return;
 
             const svg = d3.select(svgRef.current);
             svg.selectAll('*').remove();
 
             const width = svgRef.current.clientWidth;
             const height = svgRef.current.clientHeight;
+            const margin = { top: 100, right: 200, bottom: 100, left: 200 };
 
-            let displayNodes = nodes;
-            let displayLinks = links;
-            
-            if (focusedPerson) {
-              const connectedNodeIds = new Set([focusedPerson.id]);
-              links.forEach(link => {
-                if (link.source === focusedPerson.id || link.source.id === focusedPerson.id) {
-                  connectedNodeIds.add(typeof link.target === 'string' ? link.target : link.target.id);
-                }
-                if (link.target === focusedPerson.id || link.target.id === focusedPerson.id) {
-                  connectedNodeIds.add(typeof link.source === 'string' ? link.source : link.source.id);
+            // 获取与焦点人物相关的节点和链接
+            const relatedLinks = links.filter(link => 
+              link.source === focusedPerson.id || link.target === focusedPerson.id
+            );
+
+            const relatedNodeIds = new Set([focusedPerson.id]);
+            relatedLinks.forEach(link => {
+              relatedNodeIds.add(link.source);
+              relatedNodeIds.add(link.target);
+            });
+
+            const relatedNodes = nodes.filter(node => relatedNodeIds.has(node.id));
+
+            // 构建树形数据结构
+            const treeData = {
+              id: focusedPerson.id,
+              name: focusedPerson.name,
+              data: focusedPerson,
+              children: []
+            };
+
+            // 根据关系强度排序并添加子节点
+            relatedLinks
+              .sort((a, b) => b.strength - a.strength)
+              .forEach(link => {
+                const childId = link.source === focusedPerson.id ? link.target : link.source;
+                const childNode = relatedNodes.find(n => n.id === childId);
+                if (childNode) {
+                  treeData.children.push({
+                    id: childNode.id,
+                    name: childNode.name,
+                    data: childNode,
+                    relationship: link.relationship,
+                    strength: link.strength
+                  });
                 }
               });
-              
-              displayNodes = nodes.filter(node => connectedNodeIds.has(node.id));
-              displayLinks = links.filter(link => {
-                const sourceId = typeof link.source === 'string' ? link.source : link.source.id;
-                const targetId = typeof link.target === 'string' ? link.target : link.target.id;
-                return connectedNodeIds.has(sourceId) && connectedNodeIds.has(targetId);
-              });
-            }
 
-            const simulation = d3.forceSimulation(displayNodes)
-              .force('link', d3.forceLink(displayLinks).id(d => d.id).distance(d => 150 * (1 - (d.strength || 0.5))))
-              .force('charge', d3.forceManyBody().strength(-400))
-              .force('center', d3.forceCenter(width / 2, height / 2))
-              .force('collision', d3.forceCollide().radius(50));
+            // 创建树形布局
+            const treeLayout = d3.tree()
+              .size([height - margin.top - margin.bottom, width - margin.left - margin.right])
+              .separation((a, b) => 2); // 增加节点间距
 
+            const root = d3.hierarchy(treeData);
+            const treeNodes = treeLayout(root);
+
+            // 创建缩放功能
             const zoom = d3.zoom()
               .scaleExtent([0.1, 4])
               .on('zoom', (event) => {
@@ -331,34 +1648,50 @@
 
             svg.call(zoom);
 
-            const container = svg.append('g');
+            const container = svg.append('g')
+              .attr('transform', `translate(${margin.left},${margin.top})`);
 
-            // 添加连线
-            const link = container.append('g')
-              .selectAll('line')
-              .data(displayLinks)
-              .enter().append('line')
-              .attr('stroke', '#999')
-              .attr('stroke-opacity', d => d.strength || 0.6)
-              .attr('stroke-width', d => d.strength ? d.strength * 4 : 2);
+            // 绘制连线
+            const link = container.selectAll('.tree-link')
+              .data(root.links())
+              .enter().append('path')
+              .attr('class', d => `tree-link ${d.target.data.strength > 0.7 ? 'strong' : ''}`)
+              .attr('d', d => {
+                return `M${d.source.y},${d.source.x}
+                        C${(d.source.y + d.target.y) / 2},${d.source.x}
+                        ${(d.source.y + d.target.y) / 2},${d.target.x}
+                        ${d.target.y},${d.target.x}`;
+              });
 
             // 添加关系标签
-            const linkText = container.append('g')
-              .selectAll('text')
-              .data(displayLinks)
+            const linkLabel = container.selectAll('.link-label')
+              .data(root.links())
               .enter().append('text')
-              .attr('font-size', 11)
-              .attr('fill', '#666')
+              .attr('class', 'link-label')
+              .attr('x', d => (d.source.y + d.target.y) / 2)
+              .attr('y', d => (d.source.x + d.target.x) / 2)
               .attr('text-anchor', 'middle')
-              .text(d => d.relationship);
+              .attr('dy', -5)
+              .style('font-size', '12px')
+              .style('fill', '#666')
+              .text(d => d.target.data.relationship || '');
 
-            // 添加节点
-            const node = container.append('g')
-              .selectAll('circle')
-              .data(displayNodes)
-              .enter().append('circle')
-              .attr('r', d => d.id === focusedPerson?.id ? 40 : 30)
-              .attr('fill', d => {
+            // 绘制节点
+            const node = container.selectAll('.tree-node')
+              .data(root.descendants())
+              .enter().append('g')
+              .attr('class', 'tree-node')
+              .attr('transform', d => `translate(${d.y},${d.x})`)
+              .on('click', (event, d) => {
+                if (d.data.data) {
+                  setSelectedNode(d.data.data);
+                }
+              });
+
+            // 节点圆圈
+            node.append('circle')
+              .attr('r', d => d.depth === 0 ? 40 : 30)
+              .style('fill', d => {
                 const colors = {
                   '人工智能': '#3b82f6',
                   '投资': '#10b981',
@@ -369,277 +1702,26 @@
                   '新能源': '#6366f1',
                   '建筑工程': '#6b7280'
                 };
-                return colors[d.industry] || '#6b7280';
-              })
-              .attr('stroke', '#fff')
-              .attr('stroke-width', 3)
-              .style('cursor', 'pointer')
-              .on('click', (event, d) => {
-                setSelectedNode(d);
-              })
-              .call(d3.drag()
-                .on('start', dragstarted)
-                .on('drag', dragged)
-                .on('end', dragended));
+                return colors[d.data.data?.industry] || '#6b7280';
+              });
 
-            // 添加标签
-            const label = container.append('g')
-              .selectAll('text')
-              .data(displayNodes)
-              .enter().append('text')
-              .text(d => d.name)
-              .attr('font-size', d => d.id === focusedPerson?.id ? 16 : 14)
-              .attr('font-weight', d => d.id === focusedPerson?.id ? 'bold' : 'normal')
+            // 节点文本
+            node.append('text')
+              .attr('dy', d => d.depth === 0 ? 55 : 45)
               .attr('text-anchor', 'middle')
-              .attr('dy', 50)
-              .style('pointer-events', 'none');
+              .style('font-weight', d => d.depth === 0 ? 'bold' : 'normal')
+              .style('font-size', d => d.depth === 0 ? '16px' : '14px')
+              .text(d => d.data.name);
 
-            simulation.on('tick', () => {
-              link
-                .attr('x1', d => d.source.x)
-                .attr('y1', d => d.source.y)
-                .attr('x2', d => d.target.x)
-                .attr('y2', d => d.target.y);
+            // 添加学院标签
+            node.append('text')
+              .attr('dy', d => d.depth === 0 ? 70 : 60)
+              .attr('text-anchor', 'middle')
+              .style('font-size', '11px')
+              .style('fill', '#666')
+              .text(d => d.data.data?.company || '');
 
-              linkText
-                .attr('x', d => (d.source.x + d.target.x) / 2)
-                .attr('y', d => (d.source.y + d.target.y) / 2);
-
-              node
-                .attr('cx', d => d.x)
-                .attr('cy', d => d.y);
-
-              label
-                .attr('x', d => d.x)
-                .attr('y', d => d.y);
-            });
-
-            function dragstarted(event, d) {
-              if (!event.active) simulation.alphaTarget(0.3).restart();
-              d.fx = d.x;
-              d.fy = d.y;
-            }
-
-            function dragged(event, d) {
-              d.fx = event.x;
-              d.fy = event.y;
-            }
-
-            function dragended(event, d) {
-              if (!event.active) simulation.alphaTarget(0);
-              d.fx = null;
-              d.fy = null;
-            }
-
-            return () => {
-              simulation.stop();
-            };
-          }, [nodes, links, currentView, focusedPerson]);
-
-          const handleViewNetwork = (person) => {
-            setFocusedPerson(person);
-            setCurrentView('network');
-            setSelectedNode(person);
-          };
-
-          const handleBackToList = () => {
-            setCurrentView('list');
-            setFocusedPerson(null);
-            setSelectedNode(null);
-          };
-
-          const filteredNodes = nodes.filter(node => {
-            if (!searchTerm) return true;
-            const searchLower = searchTerm.toLowerCase();
-            return node.name.toLowerCase().includes(searchLower) ||
-                   node.company.toLowerCase().includes(searchLower) ||
-                   node.industry.toLowerCase().includes(searchLower) ||
-                   node.expertise.toLowerCase().includes(searchLower) ||
-                   (node.allExpertise && node.allExpertise.some(exp => 
-                     exp.toLowerCase().includes(searchLower)
-                   ));
-          });
-
-          return (
-            <div className="w-full h-screen bg-gray-50 flex flex-col">
-              {/* 顶部工具栏 */}
-              <div className="bg-white shadow-sm border-b border-gray-200 p-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    {currentView === 'network' && (
-                      <button
-                        onClick={handleBackToList}
-                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-                      >
-                        <ArrowLeftIcon />
-                        返回列表
-                      </button>
-                    )}
-                    <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                      <AcademicCapIcon className="w-8 h-8 text-blue-600" />
-                      XJTLU教授人脉关系可视化平台
-                    </h1>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        <SearchIcon />
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="搜索姓名、学院、领域、专长..."
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 主体内容区 */}
-              {currentView === 'list' ? (
-                <div className="flex-1 overflow-y-auto p-6">
-                  <div className="max-w-7xl mx-auto">
-                    <div className="mb-4 text-gray-600 flex items-center justify-between">
-                      <span>共有 {nodes.length} 位教授，{links.length} 个关系连接</span>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                          人工智能
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                          投资
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                          供应链
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                          教育
-                        </span>
-                      </div>
-                    </div>
-                    {filteredNodes.length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filteredNodes.map(person => (
-                          <PersonCard 
-                            key={person.id} 
-                            person={person} 
-                            onViewNetwork={handleViewNetwork}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <p className="text-gray-500">没有找到匹配的教授</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="flex-1 flex">
-                  {selectedNode && (
-                    <div className="w-96 bg-white shadow-lg p-6 overflow-y-auto">
-                      <div className="flex justify-between items-start mb-6">
-                        <h2 className="text-xl font-bold text-gray-800">{selectedNode.name}</h2>
-                        <button
-                          onClick={() => setSelectedNode(null)}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          <XIcon />
-                        </button>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-sm text-gray-500">学院</p>
-                          <p className="font-medium">{selectedNode.company}</p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-sm text-gray-500">职位</p>
-                          <p className="font-medium">{selectedNode.position}</p>
-                        </div>
-                        
-                        {selectedNode.email && (
-                          <div>
-                            <p className="text-sm text-gray-500 flex items-center gap-1">
-                              <MailIcon />
-                              邮箱
-                            </p>
-                            <p className="font-medium text-blue-600">
-                              <a href={`mailto:${selectedNode.email}`}>{selectedNode.email}</a>
-                            </p>
-                          </div>
-                        )}
-                        
-                        <div>
-                          <p className="text-sm text-gray-500">研究领域</p>
-                          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                            {selectedNode.industry}
-                          </span>
-                        </div>
-                        
-                        <div>
-                          <p className="text-sm text-gray-500 mb-2">研究方向</p>
-                          <div className="space-y-1">
-                            {selectedNode.allExpertise && selectedNode.allExpertise.map((exp, index) => (
-                              <div key={index} className="text-sm text-gray-700 pl-2 border-l-2 border-gray-200">
-                                {exp}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div className="pt-4 border-t">
-                          <p className="text-sm text-gray-500 mb-2">关系分析</p>
-                          <div className="text-sm text-gray-600">
-                            <p>基于AI权重模型分析：</p>
-                            <ul className="list-disc list-inside mt-1 space-y-1">
-                              <li>同学院权重：1.0</li>
-                              <li>同领域权重：0.7</li>
-                              <li>研究交叉权重：0.4</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex-1 bg-white relative">
-                    <svg ref={svgRef} className="w-full h-full"></svg>
-                    {currentView === 'network' && (
-                      <div className="absolute top-4 right-4 bg-white rounded-lg shadow p-3 text-sm">
-                        <h3 className="font-bold mb-2">关系类型</h3>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <div className="w-12 h-1 bg-gray-900"></div>
-                            <span>同学院</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-12 h-1 bg-gray-700"></div>
-                            <span>同领域</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-12 h-1 bg-gray-400"></div>
-                            <span>研究交叉</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        };
-
-        // 渲染应用
-        ReactDOM.render(<NetworkVisualization />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+            // 初始缩放以适应内容
+            const bounds = container.node().getBBox();
+            const fullWidth = width;
+            const fullHeight
