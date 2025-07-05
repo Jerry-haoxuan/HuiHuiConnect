@@ -120,7 +120,12 @@
                 expertise: "消费者决策",
                 email: "Junsong.Chen@xjtlu.edu.cn",
                 university: "XJTLU",
-                allExpertise: ["消费者决策","品牌","服务营销","企业社会责任","客户体验管理"]
+                allExpertise: ["消费者决策","品牌","服务营销","企业社会责任","客户体验管理"],
+                education: {
+                  bachelor: "武汉大学",
+                  master: "武汉大学",
+                  phd: "英国伯明翰大学"
+                }
               },
               {
                 id: "prof_2",
@@ -131,7 +136,12 @@
                 expertise: "海事脱碳和可持续航运",
                 email: "Zhongshuo.Chen@xjtlu.edu.cn",
                 university: "XJTLU",
-                allExpertise: ["海事脱碳和可持续航运","替代船用燃料和应用","生命周期评估","机器学习","船舶燃料消耗和排放"]
+                allExpertise: ["海事脱碳和可持续航运","替代船用燃料和应用","生命周期评估","机器学习","船舶燃料消耗和排放"],
+                education: {
+                  bachelor: "大连海事大学",
+                  master: "新加坡南洋理工大学",
+                  phd: "新加坡南洋理工大学"
+                }
               },
               {
                 id: "prof_3",
@@ -164,7 +174,12 @@
                 expertise: "供应链管理",
                 email: "Yuelin.Shen@xjtlu.edu.cn",
                 university: "XJTLU",
-                allExpertise: ["供应链管理","数字经济和电子商务"]
+                allExpertise: ["供应链管理","数字经济和电子商务"],
+                education: {
+                  bachelor: "复旦大学",
+                  master: "北京师范大学",
+                  phd: "美国辛辛那提大学"
+                }
               },
               {
                 id: "prof_6",
@@ -1867,6 +1882,39 @@
                           <p className="text-sm text-gray-500">职位</p>
                           <p className="font-medium">{selectedNode.position}</p>
                         </div>
+                        
+                        {/* 教育背景 */}
+                        {selectedNode.education && (
+                          <div>
+                            <p className="text-sm text-gray-500 flex items-center gap-1 mb-2">
+                              <AcademicCapIcon />
+                              教育背景
+                            </p>
+                            <div className="space-y-1">
+                              {selectedNode.education.bachelor && (
+                                <div className="text-sm">
+                                  <span className="text-gray-500">本科：</span>
+                                  <span className="text-gray-700 ml-1">{selectedNode.education.bachelor}</span>
+                                </div>
+                              )}
+                              {selectedNode.education.master && (
+                                <div className="text-sm">
+                                  <span className="text-gray-500">硕士：</span>
+                                  <span className="text-gray-700 ml-1">{selectedNode.education.master}</span>
+                                </div>
+                              )}
+                              {selectedNode.education.phd && (
+                                <div className="text-sm">
+                                  <span className="text-gray-500">博士：</span>
+                                  <span className="text-gray-700 ml-1">{selectedNode.education.phd}</span>
+                                </div>
+                              )}
+                              {!selectedNode.education.bachelor && !selectedNode.education.master && !selectedNode.education.phd && (
+                                <div className="text-sm text-gray-500 italic">暂无教育背景信息</div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                         
                         {selectedNode.email && selectedNode.email !== "" && selectedNode.email !== "暂无，和院长有关系" && selectedNode.email !== "暂无，与学院有关系" && selectedNode.email !== "暂无，与学院有关" && (
                           <div>
